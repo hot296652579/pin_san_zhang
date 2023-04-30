@@ -1,4 +1,4 @@
-const db = require('./comment/Db');
+const db = require('../comment/Db');
 
 class loginDb extends db{
     static getInstance(){

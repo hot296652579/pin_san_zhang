@@ -1,11 +1,11 @@
 var ws = require("nodejs-websocket")
-class loginMessageMgr{
+class lobbyMessageMgr {
     static getInstance(){
-        if(!loginMessageMgr.instance){
-            return loginMessageMgr.instance = new loginMessageMgr();
+        if(!lobbyMessageMgr.instance){
+            return lobbyMessageMgr.instance = new lobbyMessageMgr();
         }
         else{
-            return loginMessageMgr.instance;
+            return lobbyMessageMgr.instance;
         }
     }
 
@@ -32,17 +32,17 @@ class loginMessageMgr{
         })
 
         server.listen(port);
-        console.log('登陆服务器启动! 端口号:' + port);
+        console.log('大厅服务器启动! 端口号:' + port);
     }
 
     recvMessage(type,data,client){
         switch (type) {
-            case 'Login':
-                this.responseUserInfoById(data.id).then((result)=>{
-                    this.sendMessage(type,result,client);
-                }).catch(()=>{
-                    this.sendMessage(type,{err:'未获取到玩家信息数据'},client);
-                })
+            case 'CreateRoom':
+                // this.responseUserInfoById(data.id).then((result)=>{
+                //     this.sendMessage(type,result,client);
+                // }).catch(()=>{
+                //     this.sendMessage(type,{err:'未获取到玩家信息数据'},client);
+                // })
                 break
         }
     }
@@ -56,15 +56,15 @@ class loginMessageMgr{
         client.send(JSON.stringify((message)));
     }
 
-    responseUserInfoById(id){
-        return new Promise((resolve,reject)=>{
-            global.loginServerMgr.loginDb.getUserById(id).then((result)=>{
-                resolve(result);
-            }).catch((error)=>{
-                reject(error);
-            })
-        })
-    }
+    // responseUserInfoById(id){
+    //     return new Promise((resolve,reject)=>{
+    //         global.loginServerMgr.loginDb.getUserById(id).then((result)=>{
+    //             resolve(result);
+    //         }).catch((error)=>{
+    //             reject(error);
+    //         })
+    //     })
+    // }
 }
 
-module.exports = loginMessageMgr.getInstance();
+module.exports = lobbyMessageMgr.getInstance();
