@@ -1,11 +1,10 @@
 const db = require('../comment/Db');
 
-class lobbyDb extends db{
-    static getInstance(){
-        if(!lobbyDb.instance){
+class lobbyDb extends db {
+    static getInstance() {
+        if (!lobbyDb.instance) {
             return lobbyDb.instance = new lobbyDb();
-        }
-        else{
+        } else {
             return lobbyDb.instance;
         }
     }
@@ -15,10 +14,17 @@ class lobbyDb extends db{
         this.connectSQL();
     }
 
-    getUserById(id){
-        return new Promise((resolve,reject)=>{
+    getUserById(id) {
+        return new Promise((resolve, reject) => {
             let sql = `select *from user_info where user_id = ${id}`;
-            this.myQuery(sql,resolve,reject);
+            this.myQuery(sql, resolve, reject);
+        })
+    }
+
+    requesonRoomId(id) {
+        return new Promise((resolve, reject) => {
+            let sql = `select *from room_info where room_id = ${id}`;
+            this.myQuery(sql, resolve, reject);
         })
     }
 }
