@@ -27,6 +27,14 @@ class lobbyDb extends db {
             this.myQuery(sql, resolve, reject);
         })
     }
+
+    saveRoomInfo(roomId, data) {
+        return new Promise((resolve, reject) => {
+            console.log('createid:', data.createId);
+            let sql = `insert into room_info(room_id,create_id,game_numbers,jiesan)values(${roomId},${data.createId},${data.gameNumbers},${data.isQuanPiaoJieSan})`;
+            this.myQuery(sql, resolve, reject);
+        })
+    }
 }
 
 global.loginServerMgr.lobbyDb = lobbyDb.getInstance();

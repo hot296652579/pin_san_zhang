@@ -45,7 +45,21 @@ class lobbyMessageMgr {
 
     async responseCreateRoom(type, cData, client) {
         let roomId = await this.getNewRoomId();
-        console.log('cData:', cData);
+        global.loginServerMgr.lobbyDb.saveRoomInfo(roomId, cData.data).then(() => {
+            console.log('创建房间数据保存到数据库中了!');
+            let result = {
+                type,
+                data: roomId
+            }
+            this.sendMessage(type, result, client);
+        }).catch((err) => {
+            console.log('创建房间数据保存到数据库 失败:', err);
+            let result = {
+                type,
+                data: 0
+            }
+            this.sendMessage(type, 0, client);
+        })
     }
 
     async getNewRoomId() {
@@ -59,7 +73,7 @@ class lobbyMessageMgr {
         for (let i = 0; i < 6; i++) {
             if (i === 0) {
                 let random = Math.round(Math.random() * 9);
-                if (random != 0) {
+                if (random !== 0) {
                     str += random;
                     continue
                 } else {
