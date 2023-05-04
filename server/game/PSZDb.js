@@ -14,12 +14,12 @@ class PSZDb extends db {
         this.connectSQL();
     }
 
-    // getUserById(id) {
-    //     return new Promise((resolve, reject) => {
-    //         let sql = `select *from user_info where user_id = ${id}`;
-    //         this.myQuery(sql, resolve, reject);
-    //     })
-    // }
+    getRoomInfoById(id) {
+        return new Promise((resolve, reject) => {
+            let sql = `select *from room_info where room_id = ${id}`;
+            this.myQuery(sql, resolve, reject);
+        })
+    }
 }
 
 global.PSZServerMgr.PSZDb = PSZDb.getInstance();

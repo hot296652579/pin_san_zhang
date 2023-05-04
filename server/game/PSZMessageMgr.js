@@ -1,4 +1,5 @@
 var ws = require("nodejs-websocket")
+const roomMgr = require('./roomMgr');
 
 class PSZMessageMgr {
     static getInstance() {
@@ -12,7 +13,7 @@ class PSZMessageMgr {
     creatorServer(port) {
         let server = ws.createServer((client) => {
             client.on('text', (result) => {
-                console.log('客户端发来消息:', result);
+                console.log('游戏服务器 客户端发来消息:', result);
                 const json = JSON.parse((result));
                 const {type, data} = json;
                 this.recvMessage(type, data, client);
@@ -37,9 +38,23 @@ class PSZMessageMgr {
 
     recvMessage(type, cData, client) {
         switch (type) {
-            // case 'CreateRoom':
-            //     this.responseCreateRoom(type, cData, client);
-            //     break
+            case 'requestRoomInfo':
+                this.onRequestRoomInfo(type, cData, client);
+                break
+        }
+    }
+
+    onRequestRoomInfo(type, cData, client) {
+        console.log('请求房间信息:', type, cData);
+
+        let roomIsExist = false;
+        if (roomMgr.roomList.length === 0) {
+            roomIsExist = true;
+            global.PSZServerMgr.PSZDb.getRoomInfoById(cData['roomId']).then((result) => {
+                roomMgr.createRoom(type, result[0], client);
+            }).catch((err) => {
+                console.log('请求房间信息失败:', err);
+            })
         }
     }
 }

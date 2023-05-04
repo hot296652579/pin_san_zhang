@@ -37,7 +37,7 @@ class lobbyMessageMgr {
 
     recvMessage(type, cData, client) {
         switch (type) {
-            case 'CreateRoom':
+            case 'createRoom':
                 this.responseCreateRoom(type, cData, client);
                 break
         }
