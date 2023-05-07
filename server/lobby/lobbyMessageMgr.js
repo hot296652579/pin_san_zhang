@@ -40,6 +40,9 @@ class lobbyMessageMgr {
             case 'createRoom':
                 this.responseCreateRoom(type, cData, client);
                 break
+            case 'joinRoom':
+                this.responseJoinRoom(type, cData, client);
+                break
         }
     }
 
@@ -60,6 +63,21 @@ class lobbyMessageMgr {
             }
             this.sendMessage(type, 0, client);
         })
+    }
+
+    async responseJoinRoom(type, cData, client) {
+        console.log('加入房间客户端传入的数据', cData.data);
+        console.log(cData.data.joinRoomId);
+        let info = await global.loginServerMgr.lobbyDb.requesonRoomId(cData.data.joinRoomId);
+        if (info) {
+            let result = {
+                type,
+                data: info[0]
+            }
+            this.sendMessage(type, result, client);
+        } else {
+            console.log('加入房间失败:', info)
+        }
     }
 
     async getNewRoomId() {
