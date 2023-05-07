@@ -52,10 +52,24 @@ class PSZMessageMgr {
             roomIsExist = true;
             global.PSZServerMgr.PSZDb.getRoomInfoById(cData['roomId']).then((result) => {
                 roomMgr.createRoom(type, result[0], client);
+                let sendData = {
+                    type,
+                    data: result[0]
+                }
+                this.sendMessage(type, sendData, client);
             }).catch((err) => {
                 console.log('请求房间信息失败:', err);
             })
         }
+    }
+
+    sendMessage(type, data, client) {
+        const message = {
+            type,
+            data
+        }
+
+        client.send(JSON.stringify((message)));
     }
 }
 
