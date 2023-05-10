@@ -60,6 +60,18 @@ class PSZMessageMgr {
             }).catch((err) => {
                 console.log('请求房间信息失败:', err);
             })
+        } else {
+            let roomList = roomMgr.roomList;
+            for (let i = 0; i < roomList.length; i++) {
+                let tempRoom = roomList[i];
+                if (tempRoom.room_id === cData.roomId) {
+                    let sendData = {
+                        type,
+                        data: tempRoom.getRoomInfo()
+                    }
+                    this.sendMessage(type, sendData, client);
+                }
+            }
         }
     }
 
